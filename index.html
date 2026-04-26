@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SEMBOYAN.STREETWEAR</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --ink: #1a1a1a;
+  --soft: #f9f7f4;
+  --cream: #f0ece4;
+  --accent: #e63528;
+  --accent2: #2d5a3d;
+  --muted: #7a7570;
+  --border: #e0dbd3;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--soft);color:var(--ink);overflow-x:hidden;}
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:var(--ink);display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:60px;}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#fff;letter-spacing:2px;cursor:pointer;}
+.logo span{color:var(--accent);}
+.cart-btn{background:var(--accent);color:#fff;border:none;padding:8px 18px;font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:1px;cursor:pointer;border-radius:3px;display:flex;align-items:center;gap:8px;}
+.cart-count{background:#fff;color:var(--accent);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;}
+/* MARQUEE */
+.marquee-bar{background:var(--accent);color:#fff;overflow:hidden;white-space:nowrap;padding:8px 0;}
+.marquee-inner{display:inline-block;animation:marquee 28s linear infinite;font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:2px;}
+@keyframes marquee{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+/* HERO */
+.hero{position:relative;background:var(--ink);color:#fff;min-height:92vh;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;}
+.hero-left{position:relative;display:flex;flex-direction:column;justify-content:center;padding:60px 48px 60px 48px;z-index:2;}
+.hero-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:28px;}
+.hero-eyebrow-line{width:32px;height:2px;background:var(--accent);}
+.hero-eyebrow span{font-size:0.72rem;letter-spacing:4px;color:var(--accent);text-transform:uppercase;}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,7vw,7rem);line-height:0.92;letter-spacing:2px;margin-bottom:24px;}
+.hero h1 .outline{-webkit-text-stroke:2px #fff;color:transparent;}
+.hero h1 .red{color:var(--accent);}
+.hero-desc{color:#888;font-size:0.95rem;line-height:1.7;max-width:340px;margin-bottom:36px;}
+.hero-desc strong{color:#fff;font-weight:500;}
+.hero-actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+.hero-cta{background:var(--accent);color:#fff;border:none;padding:14px 32px;font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:2px;cursor:pointer;border-radius:3px;transition:all 0.2s;}
+.hero-cta:hover{background:#c42d22;transform:translateY(-2px);}
+.hero-cta2{background:none;border:1.5px solid #444;color:#aaa;padding:13px 28px;font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:2px;cursor:pointer;border-radius:3px;transition:all 0.2s;}
+.hero-cta2:hover{border-color:#fff;color:#fff;}
+.hero-stats{display:flex;gap:32px;margin-top:48px;padding-top:32px;border-top:1px solid #2a2a2a;}
+.hero-stat-num{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:1px;color:#fff;}
+.hero-stat-label{font-size:0.72rem;color:#555;letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
+/* HERO RIGHT — T-SHIRT VISUAL */
+.hero-right{position:relative;display:flex;align-items:center;justify-content:center;background:#111;overflow:hidden;}
+.hero-right::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,#2a0a08 0%,#111 70%);pointer-events:none;}
+.tshirt-wrap{position:relative;z-index:2;animation:floatTee 4s ease-in-out infinite;}
+@keyframes floatTee{0%,100%{transform:translateY(0px);}50%{transform:translateY(-14px);}}
+.floating-words{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.fw{position:absolute;font-family:'Bebas Neue',sans-serif;letter-spacing:2px;opacity:0;animation:fadeFloat 6s ease-in-out infinite;}
+.fw:nth-child(1){top:12%;left:8%;font-size:1.4rem;color:var(--accent);animation-delay:0s;}
+.fw:nth-child(2){top:22%;right:10%;font-size:1rem;color:#444;animation-delay:1s;}
+.fw:nth-child(3){bottom:30%;left:6%;font-size:1.1rem;color:#333;animation-delay:2s;}
+.fw:nth-child(4){top:55%;right:8%;font-size:1.6rem;color:var(--accent);opacity:0;animation-delay:0.5s;}
+.fw:nth-child(5){bottom:15%;right:14%;font-size:0.9rem;color:#444;animation-delay:3s;}
+.fw:nth-child(6){top:38%;left:12%;font-size:0.85rem;color:#333;animation-delay:1.5s;}
+@keyframes fadeFloat{0%,100%{opacity:0;transform:translateY(10px);}30%,70%{opacity:1;transform:translateY(0);}}
+/* NAV TAGLINE */
+.nav-tagline{font-size:0.6rem;letter-spacing:3px;color:#555;font-family:'DM Sans',sans-serif;text-transform:uppercase;margin-top:2px;}
+@media(max-width:768px){
+  .hero{grid-template-columns:1fr;min-height:auto;}
+  .hero-right{height:320px;}
+  .hero-left{padding:48px 20px 32px;}
+  .hero-stats{gap:20px;}
+}
+/* FILTERS */
+.filter-section{padding:32px 32px 12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.filter-section h2{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:2px;margin-right:8px;}
+.filter-btn{background:none;border:1.5px solid var(--border);padding:6px 16px;border-radius:20px;font-size:0.85rem;cursor:pointer;color:var(--muted);transition:all 0.2s;}
+.filter-btn.active,.filter-btn:hover{background:var(--ink);color:#fff;border-color:var(--ink);}
+/* PRODUCTS */
+.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:24px;padding:16px 32px 60px;}
+.product-card{background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--border);transition:transform 0.2s,box-shadow 0.2s;}
+.product-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,0.08);}
+.product-img{height:220px;display:flex;align-items:center;justify-content:center;font-size:4.5rem;position:relative;}
+.badge{position:absolute;top:12px;left:12px;padding:3px 10px;border-radius:3px;font-size:0.7rem;font-family:'Bebas Neue',sans-serif;letter-spacing:1px;}
+.badge.new{background:var(--accent2);color:#fff;}
+.badge.sale{background:var(--accent);color:#fff;}
+.product-info{padding:16px;}
+.product-name{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:1px;}
+.product-sub{font-size:0.78rem;color:var(--muted);margin-bottom:10px;}
+.product-price{font-size:1rem;font-weight:500;margin-bottom:12px;}
+.product-price .old{text-decoration:line-through;color:var(--muted);font-size:0.85rem;margin-right:6px;}
+.product-price .new-price{color:var(--accent);}
+.size-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.size-btn{border:1.5px solid var(--border);background:none;padding:4px 9px;font-size:0.75rem;cursor:pointer;border-radius:3px;transition:all 0.15s;}
+.size-btn.selected{background:var(--ink);color:#fff;border-color:var(--ink);}
+.add-btn{width:100%;background:var(--ink);color:#fff;border:none;padding:10px;font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:1px;cursor:pointer;border-radius:4px;transition:background 0.2s;}
+.add-btn:hover{background:var(--accent);}
+/* CART DRAWER */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:200;}
+.overlay.open{display:block;}
+.cart-drawer{position:fixed;top:0;right:-420px;width:400px;max-width:95vw;height:100%;background:#fff;z-index:201;display:flex;flex-direction:column;transition:right 0.3s ease;box-shadow:-4px 0 24px rgba(0,0,0,0.12);}
+.cart-drawer.open{right:0;}
+.cart-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.cart-header h3{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:1px;}
+.close-btn{background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--muted);}
+.cart-items{flex:1;overflow-y:auto;padding:16px 24px;}
+.cart-empty{text-align:center;padding:60px 20px;color:var(--muted);}
+.cart-empty .empty-icon{font-size:3rem;margin-bottom:12px;}
+.cart-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border);}
+.cart-item-img{width:60px;height:60px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0;}
+.cart-item-info{flex:1;}
+.cart-item-name{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.5px;}
+.cart-item-meta{font-size:0.78rem;color:var(--muted);margin:2px 0 8px;}
+.qty-row{display:flex;align-items:center;gap:10px;}
+.qty-btn{width:26px;height:26px;border:1.5px solid var(--border);background:none;cursor:pointer;border-radius:3px;font-size:1rem;display:flex;align-items:center;justify-content:center;}
+.qty-num{font-size:0.9rem;font-weight:500;min-width:20px;text-align:center;}
+.remove-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.78rem;margin-left:auto;align-self:flex-start;padding-top:4px;}
+.cart-item-price{font-weight:500;font-size:0.95rem;white-space:nowrap;}
+.cart-footer{padding:20px 24px;border-top:1px solid var(--border);}
+.cart-total{display:flex;justify-content:space-between;margin-bottom:8px;font-size:0.9rem;}
+.cart-total.big{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:1px;margin-bottom:16px;}
+.checkout-btn{width:100%;background:var(--accent);color:#fff;border:none;padding:14px;font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:2px;cursor:pointer;border-radius:4px;}
+.checkout-btn:hover{background:#c42d22;}
+/* CHECKOUT VIEW */
+#checkout-view,#success-view{display:none;}
+.checkout-wrap{max-width:600px;margin:0 auto;padding:48px 24px;}
+.checkout-wrap h2{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:2px;margin-bottom:6px;}
+.checkout-wrap .sub{color:var(--muted);font-size:0.88rem;margin-bottom:32px;}
+.form-section{margin-bottom:28px;}
+.form-section h4{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:1px;margin-bottom:14px;color:var(--accent);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.form-row.full{grid-template-columns:1fr;}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-group label{font-size:0.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+.form-group input,.form-group select{padding:10px 12px;border:1.5px solid var(--border);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.9rem;background:#fff;outline:none;transition:border-color 0.2s;}
+.form-group input:focus,.form-group select:focus{border-color:var(--ink);}
+.order-summary{background:var(--cream);border-radius:8px;padding:20px;margin-bottom:24px;}
+.order-summary h4{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:1px;margin-bottom:14px;}
+.summary-item{display:flex;justify-content:space-between;font-size:0.88rem;margin-bottom:8px;}
+.summary-total{display:flex;justify-content:space-between;font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:1px;border-top:1px solid var(--border);padding-top:12px;margin-top:8px;}
+.place-btn{width:100%;background:var(--accent);color:#fff;border:none;padding:16px;font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:2px;cursor:pointer;border-radius:5px;margin-bottom:12px;}
+.place-btn:hover{background:#c42d22;}
+.back-link{background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.88rem;text-decoration:underline;}
+/* SUCCESS VIEW */
+.success-wrap{max-width:500px;margin:0 auto;padding:80px 24px;text-align:center;}
+.success-icon{font-size:4rem;margin-bottom:20px;}
+.success-wrap h2{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:2px;margin-bottom:10px;}
+.success-wrap p{color:var(--muted);margin-bottom:6px;}
+.order-id{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--accent);letter-spacing:2px;margin:20px 0;}
+.continue-btn{background:var(--ink);color:#fff;border:none;padding:14px 32px;font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:2px;cursor:pointer;border-radius:4px;margin-top:16px;}
+/* FOOTER */
+footer{background:var(--ink);color:#fff;padding:48px 32px 24px;}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:32px;margin-bottom:40px;}
+.footer-col h4{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:2px;margin-bottom:14px;color:var(--accent);}
+.footer-col p,.footer-col a{font-size:0.85rem;color:#888;line-height:1.9;display:block;text-decoration:none;}
+.footer-col a:hover{color:#fff;}
+.footer-bottom{border-top:1px solid #333;padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:gap;gap:12px;}
+.footer-bottom p{font-size:0.78rem;color:#555;}
+.social-links{display:flex;gap:14px;}
+.social-links a{color:#555;text-decoration:none;font-size:0.8rem;letter-spacing:1px;}
+.social-links a:hover{color:var(--accent);}
+/* TOAST */
+#toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 24px;border-radius:6px;font-size:0.9rem;opacity:0;transition:all 0.3s;z-index:999;pointer-events:none;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+@media(max-width:600px){
+  .product-grid{padding:12px 16px 40px;}
+  nav{padding:0 16px;}
+  .hero{padding:60px 20px 50px;}
+  .filter-section{padding:20px 16px 8px;}
+  .cart-drawer{width:100%;max-width:100vw;}
+  .form-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div onclick="showShop()" style="cursor:pointer;">
+    <div class="logo">SEMBOYAN<span>.</span>STREETWEAR</div>
+    <div class="nav-tagline">Premium Tees · Made in Malaysia</div>
+  </div>
+  <button class="cart-btn" onclick="openCart()">
+    🛒 CART <span class="cart-count" id="cart-count">0</span>
+  </button>
+</nav>
+
+<!-- MAIN VIEW -->
+<div id="main-view">
+
+  <!-- MARQUEE -->
+  <div class="marquee-bar">
+    <span class="marquee-inner">
+      FREE SHIPPING ABOVE RM150 &nbsp;·&nbsp; NEW DROP EVERY FRIDAY &nbsp;·&nbsp; 100% ORGANIC COTTON &nbsp;·&nbsp; MADE IN MALAYSIA &nbsp;·&nbsp; LIMITED QUANTITIES &nbsp;·&nbsp; TAMIL TYPE &amp; MY SLANG &nbsp;·&nbsp; CULTURAL PRIDE &nbsp;·&nbsp;
+      FREE SHIPPING ABOVE RM150 &nbsp;·&nbsp; NEW DROP EVERY FRIDAY &nbsp;·&nbsp; 100% ORGANIC COTTON &nbsp;·&nbsp; MADE IN MALAYSIA &nbsp;·&nbsp; LIMITED QUANTITIES &nbsp;·&nbsp; TAMIL TYPE &amp; MY SLANG &nbsp;·&nbsp; CULTURAL PRIDE &nbsp;·&nbsp;
+    </span>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <!-- LEFT: COPY -->
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <div class="hero-eyebrow-line"></div>
+        <span>Malaysian Streetwear · Limited Drops</span>
+      </div>
+      <h1>
+        WEAR<br/>
+        <span class="outline">YOUR</span><br/>
+        <span class="red">ROOTS.</span>
+      </h1>
+      <p class="hero-desc">
+        <strong>Bold tees. Real identity.</strong> Tamil typography meets Malaysian street culture — for the generation that refuses to forget who they are.
+      </p>
+      <div class="hero-actions">
+        <button class="hero-cta" onclick="document.querySelector('.product-grid').scrollIntoView({behavior:'smooth'})">SHOP THE DROP →</button>
+        <button class="hero-cta2" onclick="filterProducts('tamil', document.querySelectorAll('.filter-btn')[1]); document.querySelector('.product-grid').scrollIntoView({behavior:'smooth'})">TAMIL TYPE</button>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="hero-stat-num">12+</div>
+          <div class="hero-stat-label">Designs</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">100%</div>
+          <div class="hero-stat-label">Cotton</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">MY</div>
+          <div class="hero-stat-label">Made Here</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: T-SHIRT SVG VISUAL -->
+    <div class="hero-right">
+      <div class="floating-words">
+        <div class="fw">வணக்கம்</div>
+        <div class="fw">MAKKAL</div>
+        <div class="fw">LAH ENERGY</div>
+        <div class="fw">இனிமை</div>
+        <div class="fw">BOLEH LAH</div>
+        <div class="fw">SEMANGAT</div>
+      </div>
+      <div class="tshirt-wrap">
+        <svg width="280" height="300" viewBox="0 0 280 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- T-shirt shape -->
+          <path d="M85 20 L20 70 L50 90 L50 270 L230 270 L230 90 L260 70 L195 20 C185 35 165 45 140 45 C115 45 95 35 85 20Z" fill="#e63528" opacity="0.15" stroke="#e63528" stroke-width="2"/>
+          <path d="M85 20 L20 70 L50 90 L50 270 L230 270 L230 90 L260 70 L195 20 C185 35 165 45 140 45 C115 45 95 35 85 20Z" fill="none" stroke="#e63528" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.4"/>
+          <!-- Collar -->
+          <path d="M95 22 C105 42 120 52 140 52 C160 52 175 42 185 22" fill="none" stroke="#e63528" stroke-width="2" opacity="0.7"/>
+          <!-- Tamil text on shirt -->
+          <text x="140" y="155" text-anchor="middle" font-size="32" fill="#e63528" opacity="0.9" font-family="serif">வணக்கம்</text>
+          <text x="140" y="195" text-anchor="middle" font-size="11" fill="#666" letter-spacing="4" font-family="sans-serif">SEMBOYAN STREETWEAR</text>
+          <!-- Sleeve lines -->
+          <line x1="50" y1="90" x2="20" y2="70" stroke="#e63528" stroke-width="1" opacity="0.3"/>
+          <line x1="230" y1="90" x2="260" y2="70" stroke="#e63528" stroke-width="1" opacity="0.3"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILTERS -->
+  <div class="filter-section">
+    <h2>DROPS</h2>
+    <button class="filter-btn active" onclick="filterProducts('all',this)">All</button>
+    <button class="filter-btn" onclick="filterProducts('tamil',this)">Tamil Type</button>
+    <button class="filter-btn" onclick="filterProducts('myslang',this)">MY Slang</button>
+    <button class="filter-btn" onclick="filterProducts('cultural',this)">Cultural Pride</button>
+    <button class="filter-btn" onclick="filterProducts('sale',this)">On Sale</button>
+  </div>
+
+  <!-- PRODUCT GRID -->
+  <div class="product-grid" id="product-grid"></div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>SEMBOYAN</h4>
+        <p>Tamil typography meets Malaysian street culture. Limited drops, real identity.</p>
+        <p style="margin-top:10px;color:#555;">hello@semboyanstreetwear.my</p>
+      </div>
+      <div class="footer-col">
+        <h4>SHOP</h4>
+        <a href="#">Tamil Type</a>
+        <a href="#">MY Slang</a>
+        <a href="#">Cultural Pride</a>
+        <a href="#">Sale</a>
+      </div>
+      <div class="footer-col">
+        <h4>INFO</h4>
+        <a href="#">Size Guide</a>
+        <a href="#">Shipping & Returns</a>
+        <a href="#">FAQ</a>
+        <a href="#">About Us</a>
+      </div>
+      <div class="footer-col">
+        <h4>FIND US</h4>
+        <a href="#">Instagram</a>
+        <a href="#">TikTok</a>
+        <a href="#">Shopee</a>
+        <a href="#">Lazada</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Semboyan Streetwear. All rights reserved.</p>
+      <div class="social-links">
+        <a href="#">IG</a>
+        <a href="#">TT</a>
+        <a href="#">SHOPEE</a>
+        <a href="#">LAZADA</a>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- end main-view -->
+
+<!-- CHECKOUT VIEW -->
+<div id="checkout-view">
+  <div class="checkout-wrap">
+    <h2>CHECKOUT</h2>
+    <p class="sub">Almost there — complete your order below.</p>
+
+    <div class="order-summary" id="order-summary"></div>
+
+    <div class="form-section">
+      <h4>Personal Details</h4>
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" id="fname" placeholder="Muthu"/>
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" id="lname" placeholder="Kumar"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="email" placeholder="muthu@email.com"/>
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="tel" id="phone" placeholder="01X-XXXXXXX"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h4>Shipping Address</h4>
+      <div class="form-row full">
+        <div class="form-group">
+          <label>Address</label>
+          <input type="text" id="address" placeholder="No. 12, Jalan Semboyan"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>City</label>
+          <input type="text" id="city" placeholder="Cyberjaya"/>
+        </div>
+        <div class="form-group">
+          <label>Postcode</label>
+          <input type="text" id="postcode" placeholder="63000"/>
+        </div>
+      </div>
+      <div class="form-row full">
+        <div class="form-group">
+          <label>State</label>
+          <select id="state">
+            <option value="">Select state</option>
+            <option>Kuala Lumpur</option>
+            <option>Selangor</option>
+            <option>Penang</option>
+            <option>Johor</option>
+            <option>Perak</option>
+            <option>Sabah</option>
+            <option>Sarawak</option>
+            <option>Negeri Sembilan</option>
+            <option>Melaka</option>
+            <option>Pahang</option>
+            <option>Kelantan</option>
+            <option>Terengganu</option>
+            <option>Kedah</option>
+            <option>Perlis</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h4>Payment</h4>
+      <div class="form-row full">
+        <div class="form-group">
+          <label>Card Number</label>
+          <input type="text" placeholder="1234 5678 9012 3456" maxlength="19" id="card"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Expiry</label>
+          <input type="text" placeholder="MM/YY" maxlength="5" id="expiry"/>
+        </div>
+        <div class="form-group">
+          <label>CVV</label>
+          <input type="text" placeholder="123" maxlength="3" id="cvv"/>
+        </div>
+      </div>
+    </div>
+
+    <button class="place-btn" onclick="placeOrder()">PLACE ORDER →</button>
+    <button class="back-link" onclick="showShop()">← Back to shop</button>
+  </div>
+</div>
+
+<!-- SUCCESS VIEW -->
+<div id="success-view">
+  <div class="success-wrap">
+    <div class="success-icon">🎉</div>
+    <h2>ORDER PLACED!</h2>
+    <p>Terima kasih! Your order is confirmed.</p>
+    <p>You'll get a confirmation email shortly.</p>
+    <div class="order-id" id="order-id">SSW-XXXXXX</div>
+    <p style="font-size:0.82rem;color:var(--muted);">Save this order ID for tracking</p>
+    <button class="continue-btn" onclick="showShop()">CONTINUE SHOPPING</button>
+  </div>
+</div>
+
+<!-- CART DRAWER -->
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cart-drawer">
+  <div class="cart-header">
+    <h3>YOUR CART</h3>
+    <button class="close-btn" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cart-items">
+    <div class="cart-empty">
+      <div class="empty-icon">🛒</div>
+      <p>Your cart is empty</p>
+      <p style="font-size:0.8rem;color:var(--muted);margin-top:6px;">Add some tees lah!</p>
+    </div>
+  </div>
+  <div class="cart-footer" id="cart-footer" style="display:none;">
+    <div class="cart-total"><span>Subtotal</span><span id="cart-subtotal">RM 0</span></div>
+    <div class="cart-total"><span>Shipping</span><span id="cart-shipping">RM 9</span></div>
+    <div class="cart-total big"><span>TOTAL</span><span id="cart-total-val">RM 0</span></div>
+    <button class="checkout-btn" onclick="goCheckout()">CHECKOUT →</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+const PRODUCTS = [
+  {id:1, name:'வணக்கம்', sub:'Tamil Type · Unisex', emoji:'🙏', bg:'#f8e8e8', category:'tamil', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:'new'},
+  {id:2, name:'MAKKAL', sub:'Tamil Type · Unisex', emoji:'✊', bg:'#eaf2e8', category:'tamil', price:89, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
+  {id:3, name:'இனிமை', sub:'Tamil Type · Oversized', emoji:'🌸', bg:'#f0f4f8', category:'tamil', price:95, oldPrice:null, sizes:['S','M','L','XL','XXL'], badge:'new'},
+  {id:4, name:'நம்பிக்கை', sub:'Tamil Type · Unisex', emoji:'🌟', bg:'#fdf0e0', category:'tamil', price:89, oldPrice:null, sizes:['XS','S','M','L'], badge:null},
+  {id:5, name:'LAH ENERGY', sub:'MY Slang · Oversized', emoji:'⚡', bg:'#f4ede0', category:'myslang', price:99, oldPrice:null, sizes:['S','M','L','XL','XXL'], badge:'new'},
+  {id:6, name:'BOLEH LAH', sub:'MY Slang · Unisex', emoji:'💪', bg:'#e8f4f0', category:'myslang', price:79, oldPrice:99, sizes:['XS','S','M','L','XL'], badge:'sale'},
+  {id:7, name:'LEPAK KING', sub:'MY Slang · Oversized', emoji:'😎', bg:'#e8e8f4', category:'myslang', price:85, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
+  {id:8, name:'JANGAN TAKUT', sub:'MY Slang · Unisex', emoji:'🦁', bg:'#f5ede0', category:'myslang', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:null},
+  {id:9, name:'TANAH AIR', sub:'Cultural Pride · Unisex', emoji:'🌺', bg:'#eaf2e8', category:'cultural', price:95, oldPrice:null, sizes:['S','M','L','XL'], badge:'new'},
+  {id:10, name:'MALAYSIA KITA', sub:'Cultural Pride · Oversized', emoji:'🇲🇾', bg:'#f0f4f8', category:'cultural', price:99, oldPrice:119, sizes:['S','M','L','XL','XXL'], badge:'sale'},
+  {id:11, name:'SEMANGAT', sub:'Cultural Pride · Unisex', emoji:'🔥', bg:'#f8e8e8', category:'cultural', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:null},
+  {id:12, name:'AKAR UMBI', sub:'Cultural Pride · Oversized', emoji:'🌿', bg:'#f5f5f0', category:'cultural', price:95, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
+];
+
+let cart = [];
+let selectedSizes = {};
+
+function renderProducts(filter='all') {
+  const grid = document.getElementById('product-grid');
+  const filtered = filter === 'all' ? PRODUCTS :
+    filter === 'sale' ? PRODUCTS.filter(p => p.badge === 'sale') :
+    PRODUCTS.filter(p => p.category === filter);
+  grid.innerHTML = filtered.map(p => `
+    <div class="product-card" data-id="${p.id}">
+      <div class="product-img" style="background:${p.bg}">
+        ${p.badge ? `<span class="badge ${p.badge}">${p.badge.toUpperCase()}</span>` : ''}
+        ${p.emoji}
+      </div>
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-sub">${p.sub}</div>
+        <div class="product-price">
+          ${p.oldPrice ? `<span class="old">RM ${p.oldPrice}</span><span class="new-price">RM ${p.price}</span>` : `RM ${p.price}`}
+        </div>
+        <div class="size-row" id="sizes-${p.id}">
+          ${p.sizes.map(s => `<button class="size-btn" onclick="selectSize(${p.id},'${s}',this)">${s}</button>`).join('')}
+        </div>
+        <button class="add-btn" onclick="addToCart(${p.id})">ADD TO CART</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectSize(pid, size, btn) {
+  document.querySelectorAll(`#sizes-${pid} .size-btn`).forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedSizes[pid] = size;
+}
+
+function addToCart(pid) {
+  const size = selectedSizes[pid];
+  if (!size) { showToast('Alamak! Choose a size dulu lah 🙏'); return; }
+  const product = PRODUCTS.find(p => p.id === pid);
+  const existing = cart.find(i => i.id === pid && i.size === size);
+  if (existing) { existing.qty++; }
+  else { cart.push({...product, size, qty:1}); }
+  updateCartCount();
+  showToast(`${product.name} (${size}) added! 🔥`);
+}
+
+function updateCartCount() {
+  const total = cart.reduce((s,i) => s + i.qty, 0);
+  document.getElementById('cart-count').textContent = total;
+}
+
+function openCart() {
+  document.getElementById('cart-drawer').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+  renderCart();
+}
+
+function closeCart() {
+  document.getElementById('cart-drawer').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+
+function renderCart() {
+  const itemsEl = document.getElementById('cart-items');
+  const footerEl = document.getElementById('cart-footer');
+  if (cart.length === 0) {
+    itemsEl.innerHTML = `<div class="cart-empty"><div class="empty-icon">🛒</div><p>Your cart is empty</p><p style="font-size:0.8rem;color:var(--muted);margin-top:6px;">Add some tees lah!</p></div>`;
+    footerEl.style.display = 'none';
+    return;
+  }
+  itemsEl.innerHTML = cart.map((item,idx) => `
+    <div class="cart-item">
+      <div class="cart-item-img" style="background:${item.bg}">${item.emoji}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-meta">${item.sub} · Size ${item.size}</div>
+        <div class="qty-row">
+          <button class="qty-btn" onclick="changeQty(${idx},-1)">−</button>
+          <span class="qty-num">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${idx},1)">+</button>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+        <span class="cart-item-price">RM ${item.price * item.qty}</span>
+        <button class="remove-btn" onclick="removeItem(${idx})">Remove</button>
+      </div>
+    </div>
+  `).join('');
+  const subtotal = cart.reduce((s,i) => s + i.price * i.qty, 0);
+  const shipping = subtotal >= 150 ? 0 : 9;
+  document.getElementById('cart-subtotal').textContent = `RM ${subtotal}`;
+  document.getElementById('cart-shipping').textContent = shipping === 0 ? 'FREE 🎉' : `RM ${shipping}`;
+  document.getElementById('cart-total-val').textContent = `RM ${subtotal + shipping}`;
+  footerEl.style.display = 'block';
+}
+
+function changeQty(idx, delta) {
+  cart[idx].qty += delta;
+  if (cart[idx].qty <= 0) cart.splice(idx,1);
+  updateCartCount();
+  renderCart();
+}
+
+function removeItem(idx) {
+  cart.splice(idx,1);
+  updateCartCount();
+  renderCart();
+}
+
+function goCheckout() {
+  if (cart.length === 0) return;
+  closeCart();
+  const subtotal = cart.reduce((s,i) => s + i.price * i.qty, 0);
+  const shipping = subtotal >= 150 ? 0 : 9;
+  document.getElementById('order-summary').innerHTML = `
+    <h4>Order Summary</h4>
+    ${cart.map(i => `<div class="summary-item"><span>${i.name} × ${i.qty} (${i.size})</span><span>RM ${i.price * i.qty}</span></div>`).join('')}
+    <div class="summary-item"><span>Shipping</span><span>${shipping === 0 ? 'FREE' : 'RM ' + shipping}</span></div>
+    <div class="summary-total"><span>TOTAL</span><span>RM ${subtotal + shipping}</span></div>
+  `;
+  document.getElementById('main-view').style.display = 'none';
+  document.getElementById('checkout-view').style.display = 'block';
+  document.getElementById('success-view').style.display = 'none';
+  window.scrollTo(0,0);
+}
+
+function placeOrder() {
+  const fields = ['fname','lname','email','phone','address','city','postcode','state','card','expiry','cvv'];
+  for (const f of fields) {
+    if (!document.getElementById(f).value.trim()) {
+      showToast('Please fill in all fields!');
+      return;
+    }
+  }
+  const orderId = 'SSW-' + Math.random().toString(36).substr(2,6).toUpperCase();
+  document.getElementById('order-id').textContent = orderId;
+  cart = [];
+  updateCartCount();
+  document.getElementById('main-view').style.display = 'none';
+  document.getElementById('checkout-view').style.display = 'none';
+  document.getElementById('success-view').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+function showShop() {
+  document.getElementById('main-view').style.display = 'block';
+  document.getElementById('checkout-view').style.display = 'none';
+  document.getElementById('success-view').style.display = 'none';
+  window.scrollTo(0,0);
+}
+
+function filterProducts(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProducts(cat);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// Init
+renderProducts();
+</script>
+</body>
+</html>
