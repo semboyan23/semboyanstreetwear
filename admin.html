@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SEMBOYAN · ADMIN</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --ink:#1a1a1a;
+  --soft:#f9f7f4;
+  --accent:#e63528;
+  --accent2:#2d5a3d;
+  --muted:#7a7570;
+  --border:#e0dbd3;
+  --cream:#f0ece4;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--soft);color:var(--ink);min-height:100vh;}
+
+/* LOGIN */
+#login-view{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--ink);}
+.login-box{background:#222;border:1px solid #333;border-radius:12px;padding:48px 40px;width:100%;max-width:380px;text-align:center;}
+.login-logo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#fff;letter-spacing:3px;margin-bottom:4px;}
+.login-logo span{color:var(--accent);}
+.login-sub{font-size:0.75rem;letter-spacing:3px;color:#555;text-transform:uppercase;margin-bottom:36px;}
+.login-box label{display:block;text-align:left;font-size:0.72rem;letter-spacing:2px;color:#777;text-transform:uppercase;margin-bottom:6px;}
+.login-box input{width:100%;padding:12px 16px;background:#1a1a1a;border:1.5px solid #333;border-radius:6px;color:#fff;font-family:'DM Sans',sans-serif;font-size:0.95rem;outline:none;transition:border-color 0.2s;margin-bottom:20px;}
+.login-box input:focus{border-color:var(--accent);}
+.login-btn{width:100%;background:var(--accent);color:#fff;border:none;padding:14px;font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:2px;cursor:pointer;border-radius:6px;transition:background 0.2s;}
+.login-btn:hover{background:#c42d22;}
+.login-error{color:var(--accent);font-size:0.82rem;margin-top:12px;display:none;}
+
+/* ADMIN NAV */
+#admin-view{display:none;}
+.admin-nav{background:var(--ink);padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.admin-logo{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:#fff;letter-spacing:2px;}
+.admin-logo span{color:var(--accent);}
+.admin-logo small{font-size:0.6rem;letter-spacing:3px;color:#555;display:block;font-family:'DM Sans',sans-serif;text-transform:uppercase;}
+.logout-btn{background:none;border:1px solid #444;color:#888;padding:6px 16px;border-radius:4px;cursor:pointer;font-size:0.8rem;letter-spacing:1px;transition:all 0.2s;}
+.logout-btn:hover{border-color:#fff;color:#fff;}
+
+/* ADMIN BODY */
+.admin-body{max-width:900px;margin:0 auto;padding:40px 24px;}
+.admin-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:16px;}
+.admin-header h1{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:2px;}
+.save-all-btn{background:var(--accent2);color:#fff;border:none;padding:12px 28px;font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:2px;cursor:pointer;border-radius:6px;transition:background 0.2s;}
+.save-all-btn:hover{background:#1e3d2a;}
+
+/* PRODUCT PRICING TABLE */
+.pricing-table{background:#fff;border-radius:12px;border:1px solid var(--border);overflow:hidden;margin-bottom:32px;}
+.pricing-table-header{background:var(--ink);color:#fff;display:grid;grid-template-columns:2fr 1fr 1fr 1fr 80px;padding:14px 20px;font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;}
+.pricing-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 80px;padding:16px 20px;align-items:center;border-bottom:1px solid var(--border);transition:background 0.15s;}
+.pricing-row:last-child{border-bottom:none;}
+.pricing-row:hover{background:var(--soft);}
+.product-cell{display:flex;align-items:center;gap:12px;}
+.product-thumb{width:48px;height:48px;border-radius:6px;object-fit:contain;background:var(--soft);border:1px solid var(--border);}
+.product-thumb-placeholder{width:48px;height:48px;border-radius:6px;background:var(--cream);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.4rem;}
+.product-cell-name{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:1px;}
+.product-cell-sub{font-size:0.72rem;color:var(--muted);}
+.price-input{width:90px;padding:8px 10px;border:1.5px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s;text-align:right;}
+.price-input:focus{border-color:var(--ink);}
+.price-input.changed{border-color:var(--accent);background:#fff8f8;}
+.price-prefix{font-size:0.8rem;color:var(--muted);margin-right:2px;}
+.badge-pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:0.65rem;letter-spacing:1px;font-family:'Bebas Neue',sans-serif;}
+.badge-pill.new{background:#eaf2e8;color:var(--accent2);}
+.badge-pill.sale{background:#fdf0f0;color:var(--accent);}
+.badge-pill.none{background:var(--cream);color:var(--muted);}
+.toggle-sale{background:none;border:1.5px solid var(--border);padding:6px 12px;border-radius:6px;font-size:0.75rem;cursor:pointer;color:var(--muted);transition:all 0.2s;white-space:nowrap;}
+.toggle-sale:hover{border-color:var(--accent);color:var(--accent);}
+.toggle-sale.active{background:#fdf0f0;border-color:var(--accent);color:var(--accent);}
+
+/* SUMMARY STATS */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:32px;}
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px;}
+.stat-label{font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.stat-value{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:1px;}
+.stat-value.red{color:var(--accent);}
+.stat-value.green{color:var(--accent2);}
+
+/* TOAST */
+#toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 24px;border-radius:6px;font-size:0.9rem;opacity:0;transition:all 0.3s;z-index:999;pointer-events:none;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+#toast.success{background:var(--accent2);}
+
+/* INSTRUCTIONS */
+.instructions{background:#fff;border:1px solid var(--border);border-radius:10px;padding:24px;margin-bottom:32px;}
+.instructions h3{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:1px;margin-bottom:12px;color:var(--accent);}
+.instructions ol{padding-left:20px;}
+.instructions li{font-size:0.85rem;color:var(--muted);line-height:2;}
+.instructions code{background:var(--cream);padding:2px 6px;border-radius:3px;font-size:0.8rem;color:var(--ink);}
+
+@media(max-width:600px){
+  .pricing-table-header{display:none;}
+  .pricing-row{grid-template-columns:1fr;gap:10px;padding:16px;}
+  .admin-body{padding:24px 16px;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-view">
+  <div class="login-box">
+    <div class="login-logo">SEMBOYAN<span>.</span>ADMIN</div>
+    <div class="login-sub">Pricing Dashboard</div>
+    <label>Password</label>
+    <input type="password" id="pwd-input" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')login()"/>
+    <button class="login-btn" onclick="login()">LOGIN →</button>
+    <div class="login-error" id="login-error">Wrong password. Try again.</div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin-view">
+  <nav class="admin-nav">
+    <div class="admin-logo">
+      SEMBOYAN<span>.</span>ADMIN
+      <small>Pricing Dashboard</small>
+    </div>
+    <button class="logout-btn" onclick="logout()">LOGOUT</button>
+  </nav>
+
+  <div class="admin-body">
+
+    <!-- STATS -->
+    <div class="stats-row" id="stats-row"></div>
+
+    <!-- HEADER -->
+    <div class="admin-header">
+      <h1>PRODUCT PRICING</h1>
+      <button class="save-all-btn" onclick="saveAll()">💾 SAVE & EXPORT</button>
+    </div>
+
+    <!-- INSTRUCTIONS -->
+    <div class="instructions">
+      <h3>How to update prices</h3>
+      <ol>
+        <li>Edit any price below — changed fields turn <span style="color:var(--accent)">red</span></li>
+        <li>Toggle <strong>Sale</strong> on/off for any product</li>
+        <li>Click <strong>SAVE & EXPORT</strong> — copies updated code to clipboard</li>
+        <li>Go to <strong>GitHub</strong> → open <code>index.html</code> → find the PRODUCTS array → paste and commit</li>
+      </ol>
+    </div>
+
+    <!-- PRICING TABLE -->
+    <div class="pricing-table">
+      <div class="pricing-table-header">
+        <span>Product</span>
+        <span>Price (RM)</span>
+        <span>Original (RM)</span>
+        <span>Badge</span>
+        <span>Sale</span>
+      </div>
+      <div id="pricing-rows"></div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ─── CONFIG ───────────────────────────────────────────
+const ADMIN_PASSWORD = 'semboyan2025';
+
+// ─── PRODUCTS (keep in sync with index.html) ──────────
+let PRODUCTS = [
+  {id:1, name:'TEH TARIK GANG', sub:'MY Slang · Unisex', images:['tehtarikgang.png'], category:'myslang', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:'new'},
+  {id:2, name:'BLACK & PROUD', sub:'MY Slang · Unisex', images:['black_proud.png'], category:'myslang', price:89, oldPrice:null, sizes:['S','M','L','XL'], badge:'new'},
+  {id:3, name:'STAY DRIPPY', sub:'MY Slang · Unisex', images:['staydrippy.png'], category:'myslang', price:95, oldPrice:null, sizes:['S','M','L','XL','XXL'], badge:'new'},
+  {id:4, name:'ANAK MALAYSIA', sub:'Cultural Pride · Unisex', images:['anakmalaysia.png'], category:'cultural', price:99, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:'new'},
+  {id:5, name:'LAH ENERGY', sub:'MY Slang · Oversized', images:[], category:'myslang', price:99, oldPrice:null, sizes:['S','M','L','XL','XXL'], badge:null},
+  {id:6, name:'BOLEH LAH', sub:'MY Slang · Unisex', images:[], category:'myslang', price:79, oldPrice:99, sizes:['XS','S','M','L','XL'], badge:'sale'},
+  {id:7, name:'வணக்கம்', sub:'Tamil Type · Unisex', images:[], category:'tamil', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:null},
+  {id:8, name:'MAKKAL', sub:'Tamil Type · Unisex', images:[], category:'tamil', price:89, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
+  {id:9, name:'TANAH AIR', sub:'Cultural Pride · Unisex', images:[], category:'cultural', price:95, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
+  {id:10, name:'MALAYSIA KITA', sub:'Cultural Pride · Oversized', images:[], category:'cultural', price:99, oldPrice:119, sizes:['S','M','L','XL','XXL'], badge:'sale'},
+  {id:11, name:'SEMANGAT', sub:'Cultural Pride · Unisex', images:[], category:'cultural', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:null},
+  {id:12, name:'LEPAK KING', sub:'MY Slang · Oversized', images:[], category:'myslang', price:85, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
+];
+
+// ─── AUTH ──────────────────────────────────────────────
+function login() {
+  const pwd = document.getElementById('pwd-input').value;
+  if (pwd === ADMIN_PASSWORD) {
+    document.getElementById('login-view').style.display = 'none';
+    document.getElementById('admin-view').style.display = 'block';
+    renderAdmin();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('pwd-input').value = '';
+    document.getElementById('pwd-input').focus();
+  }
+}
+
+function logout() {
+  document.getElementById('login-view').style.display = 'flex';
+  document.getElementById('admin-view').style.display = 'none';
+  document.getElementById('pwd-input').value = '';
+}
+
+// ─── RENDER ────────────────────────────────────────────
+function renderAdmin() {
+  renderStats();
+  renderRows();
+}
+
+function renderStats() {
+  const avgPrice = Math.round(PRODUCTS.reduce((s,p) => s + p.price, 0) / PRODUCTS.length);
+  const onSale = PRODUCTS.filter(p => p.badge === 'sale').length;
+  const withPhotos = PRODUCTS.filter(p => p.images && p.images.length > 0).length;
+  const lowestPrice = Math.min(...PRODUCTS.map(p => p.price));
+  document.getElementById('stats-row').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Total Products</div><div class="stat-value">${PRODUCTS.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Avg Price</div><div class="stat-value">RM ${avgPrice}</div></div>
+    <div class="stat-card"><div class="stat-label">On Sale</div><div class="stat-value red">${onSale}</div></div>
+    <div class="stat-card"><div class="stat-label">With Photos</div><div class="stat-value green">${withPhotos}</div></div>
+    <div class="stat-card"><div class="stat-label">Lowest Price</div><div class="stat-value">RM ${lowestPrice}</div></div>
+  `;
+}
+
+function renderRows() {
+  document.getElementById('pricing-rows').innerHTML = PRODUCTS.map(p => `
+    <div class="pricing-row" id="row-${p.id}">
+      <div class="product-cell">
+        ${p.images && p.images.length > 0
+          ? `<img class="product-thumb" src="${p.images[0]}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><div class="product-thumb-placeholder" style="display:none;">👕</div>`
+          : `<div class="product-thumb-placeholder">👕</div>`
+        }
+        <div>
+          <div class="product-cell-name">${p.name}</div>
+          <div class="product-cell-sub">${p.sub}</div>
+        </div>
+      </div>
+      <div>
+        <span class="price-prefix">RM</span>
+        <input class="price-input" type="number" id="price-${p.id}" value="${p.price}" min="1" oninput="markChanged(this,${p.id},'price')"/>
+      </div>
+      <div>
+        <span class="price-prefix">RM</span>
+        <input class="price-input" type="number" id="oldprice-${p.id}" value="${p.oldPrice || ''}" min="1" placeholder="—" oninput="markChanged(this,${p.id},'oldPrice')"/>
+      </div>
+      <div>
+        <span class="badge-pill ${p.badge || 'none'}">${p.badge ? p.badge.toUpperCase() : 'NONE'}</span>
+      </div>
+      <div>
+        <button class="toggle-sale ${p.badge==='sale'?'active':''}" id="sale-${p.id}" onclick="toggleSale(${p.id})">
+          ${p.badge==='sale' ? 'ON' : 'OFF'}
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ─── INTERACTIONS ──────────────────────────────────────
+function markChanged(input, pid, field) {
+  input.classList.add('changed');
+  const val = parseFloat(input.value) || null;
+  const p = PRODUCTS.find(x => x.id === pid);
+  if (field === 'price') p.price = val || p.price;
+  if (field === 'oldPrice') p.oldPrice = val;
+  renderStats();
+}
+
+function toggleSale(pid) {
+  const p = PRODUCTS.find(x => x.id === pid);
+  const btn = document.getElementById(`sale-${pid}`);
+  const badgeEl = document.querySelector(`#row-${pid} .badge-pill`);
+  if (p.badge === 'sale') {
+    p.badge = null;
+    btn.textContent = 'OFF';
+    btn.classList.remove('active');
+    badgeEl.className = 'badge-pill none';
+    badgeEl.textContent = 'NONE';
+  } else {
+    p.badge = 'sale';
+    btn.textContent = 'ON';
+    btn.classList.add('active');
+    badgeEl.className = 'badge-pill sale';
+    badgeEl.textContent = 'SALE';
+  }
+  renderStats();
+}
+
+// ─── SAVE & EXPORT ─────────────────────────────────────
+function saveAll() {
+  // Read all current input values
+  PRODUCTS.forEach(p => {
+    const priceEl = document.getElementById(`price-${p.id}`);
+    const oldPriceEl = document.getElementById(`oldprice-${p.id}`);
+    if (priceEl) p.price = parseFloat(priceEl.value) || p.price;
+    if (oldPriceEl) p.oldPrice = oldPriceEl.value ? parseFloat(oldPriceEl.value) : null;
+  });
+
+  // Generate the PRODUCTS array code
+  const lines = PRODUCTS.map(p => {
+    const imgs = p.images.map(i => `'${i}'`).join(',');
+    const sizes = p.sizes.map(s => `'${s}'`).join(',');
+    const badge = p.badge ? `'${p.badge}'` : 'null';
+    const oldPrice = p.oldPrice ? p.oldPrice : 'null';
+    return `  {id:${p.id}, name:'${p.name}', sub:'${p.sub}', images:[${imgs}], bg:'#ffffff', category:'${p.category}', price:${p.price}, oldPrice:${oldPrice}, sizes:[${sizes}], badge:${badge}},`;
+  });
+
+  const code = `const PRODUCTS = [\n${lines.join('\n')}\n];`;
+
+  // Copy to clipboard
+  navigator.clipboard.writeText(code).then(() => {
+    showToast('✅ Copied to clipboard! Paste into index.html on GitHub', 'success');
+    // Clear changed highlights
+    document.querySelectorAll('.price-input.changed').forEach(el => el.classList.remove('changed'));
+    renderStats();
+  }).catch(() => {
+    // Fallback — show in a textarea
+    showExportModal(code);
+  });
+}
+
+function showExportModal(code) {
+  const modal = document.createElement('div');
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px;';
+  modal.innerHTML = `
+    <div style="background:#fff;border-radius:10px;padding:24px;max-width:700px;width:100%;">
+      <div style="font-family:Bebas Neue,sans-serif;font-size:1.2rem;letter-spacing:1px;margin-bottom:12px;">COPY THIS CODE → PASTE INTO index.html</div>
+      <textarea style="width:100%;height:300px;font-family:monospace;font-size:0.78rem;padding:12px;border:1px solid #ddd;border-radius:6px;resize:none;">${code}</textarea>
+      <div style="display:flex;gap:10px;margin-top:12px;">
+        <button onclick="navigator.clipboard.writeText(this.previousElementSibling.value);this.textContent='Copied!'" style="background:#2d5a3d;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-family:Bebas Neue,sans-serif;letter-spacing:1px;">COPY</button>
+        <button onclick="this.closest('div[style]').remove()" style="background:#eee;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;">Close</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+}
+
+// ─── TOAST ─────────────────────────────────────────────
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show' + (type ? ' ' + type : '');
+  setTimeout(() => t.className = '', 3500);
+}
+</script>
+</body>
+</html>
