@@ -213,8 +213,8 @@ footer{background:var(--ink);color:#fff;padding:48px 32px 24px;}
   <!-- MARQUEE -->
   <div class="marquee-bar">
     <span class="marquee-inner">
-      FREE SHIPPING ABOVE RM150 &nbsp;·&nbsp; NEW DROP EVERY FRIDAY &nbsp;·&nbsp; 100% ORGANIC COTTON &nbsp;·&nbsp; MADE IN MALAYSIA &nbsp;·&nbsp; LIMITED QUANTITIES &nbsp;·&nbsp; TAMIL TYPE &amp; MY SLANG &nbsp;·&nbsp; CULTURAL PRIDE &nbsp;·&nbsp;
-      FREE SHIPPING ABOVE RM150 &nbsp;·&nbsp; NEW DROP EVERY FRIDAY &nbsp;·&nbsp; 100% ORGANIC COTTON &nbsp;·&nbsp; MADE IN MALAYSIA &nbsp;·&nbsp; LIMITED QUANTITIES &nbsp;·&nbsp; TAMIL TYPE &amp; MY SLANG &nbsp;·&nbsp; CULTURAL PRIDE &nbsp;·&nbsp;
+      FREE SHIPPING ABOVE RM150 &nbsp;·&nbsp; NEW DROP EVERY FRIDAY &nbsp;·&nbsp; 100% ORGANIC COTTON &nbsp;·&nbsp; MADE IN MALAYSIA &nbsp;·&nbsp; LIMITED QUANTITIES &nbsp;·&nbsp; TAMIL TYPE &amp; LOKAL VIBES &nbsp;·&nbsp; CULTURAL PRIDE &nbsp;·&nbsp;
+      FREE SHIPPING ABOVE RM150 &nbsp;·&nbsp; NEW DROP EVERY FRIDAY &nbsp;·&nbsp; 100% ORGANIC COTTON &nbsp;·&nbsp; MADE IN MALAYSIA &nbsp;·&nbsp; LIMITED QUANTITIES &nbsp;·&nbsp; TAMIL TYPE &amp; LOKAL VIBES &nbsp;·&nbsp; CULTURAL PRIDE &nbsp;·&nbsp;
     </span>
   </div>
 
@@ -266,7 +266,7 @@ footer{background:var(--ink);color:#fff;padding:48px 32px 24px;}
     <h2>DROPS</h2>
     <button class="filter-btn active" onclick="filterProducts('all',this)">All</button>
     <button class="filter-btn" onclick="filterProducts('tamil',this)">Tamil Type</button>
-    <button class="filter-btn" onclick="filterProducts('myslang',this)">MY Slang</button>
+    <button class="filter-btn" onclick="filterProducts('myslang',this)">Lokal Vibes</button>
     <button class="filter-btn" onclick="filterProducts('cultural',this)">Cultural Pride</button>
     <button class="filter-btn" onclick="filterProducts('sale',this)">On Sale</button>
   </div>
@@ -285,7 +285,7 @@ footer{background:var(--ink);color:#fff;padding:48px 32px 24px;}
       <div class="footer-col">
         <h4>SHOP</h4>
         <a href="#">Tamil Type</a>
-        <a href="#">MY Slang</a>
+        <a href="#">Lokal Vibes</a>
         <a href="#">Cultural Pride</a>
         <a href="#">Sale</a>
       </div>
@@ -471,18 +471,18 @@ footer{background:var(--ink);color:#fff;padding:48px 32px 24px;}
 
 <script>
 const PRODUCTS = [
-  {id:1, name:'TEH TARIK GANG', sub:'MY Slang · Unisex', images:['tehtarikgang.png'], bg:'#ffffff', category:'myslang', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:'new'},
-  {id:2, name:'BLACK & PROUD', sub:'MY Slang · Unisex', images:['black_proud.png'], bg:'#ffffff', category:'myslang', price:89, oldPrice:null, sizes:['S','M','L','XL'], badge:'new'},
-  {id:3, name:'STAY DRIPPY', sub:'MY Slang · Unisex', images:['staydrippy.png'], bg:'#ffffff', category:'myslang', price:95, oldPrice:null, sizes:['S','M','L','XL','XXL'], badge:'new'},
+  {id:1, name:'TEH TARIK GANG', sub:'Lokal Vibes · Unisex', images:['tehtarikgang.png'], bg:'#ffffff', category:'myslang', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:'new'},
+  {id:2, name:'BLACK & PROUD', sub:'Lokal Vibes · Unisex', images:['black_proud.png'], bg:'#ffffff', category:'myslang', price:89, oldPrice:null, sizes:['S','M','L','XL'], badge:'new'},
+  {id:3, name:'STAY DRIPPY', sub:'Lokal Vibes · Unisex', images:['staydrippy.png'], bg:'#ffffff', category:'myslang', price:95, oldPrice:null, sizes:['S','M','L','XL','XXL'], badge:'new'},
   {id:4, name:'ANAK MALAYSIA', sub:'Cultural Pride · Unisex', images:['anakmalaysia.png'], bg:'#ffffff', category:'cultural', price:99, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:'new'},
-  {id:5, name:'LAH ENERGY', sub:'MY Slang · Oversized', images:[], bg:'#ffffff', category:'myslang', price:99, oldPrice:null, sizes:['S','M','L','XL','XXL'], badge:null},
-  {id:6, name:'BOLEH LAH', sub:'MY Slang · Unisex', images:[], bg:'#ffffff', category:'myslang', price:79, oldPrice:99, sizes:['XS','S','M','L','XL'], badge:'sale'},
+  {id:5, name:'LAH ENERGY', sub:'Lokal Vibes · Oversized', images:[], bg:'#ffffff', category:'myslang', price:99, oldPrice:null, sizes:['S','M','L','XL','XXL'], badge:null},
+  {id:6, name:'BOLEH LAH', sub:'Lokal Vibes · Unisex', images:[], bg:'#ffffff', category:'myslang', price:79, oldPrice:99, sizes:['XS','S','M','L','XL'], badge:'sale'},
   {id:7, name:'வணக்கம்', sub:'Tamil Type · Unisex', images:[], bg:'#ffffff', category:'tamil', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:null},
   {id:8, name:'MAKKAL', sub:'Tamil Type · Unisex', images:[], bg:'#ffffff', category:'tamil', price:89, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
   {id:9, name:'TANAH AIR', sub:'Cultural Pride · Unisex', images:[], bg:'#ffffff', category:'cultural', price:95, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
   {id:10, name:'MALAYSIA KITA', sub:'Cultural Pride · Oversized', images:[], bg:'#ffffff', category:'cultural', price:99, oldPrice:119, sizes:['S','M','L','XL','XXL'], badge:'sale'},
   {id:11, name:'SEMANGAT', sub:'Cultural Pride · Unisex', images:[], bg:'#ffffff', category:'cultural', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:null},
-  {id:12, name:'LEPAK KING', sub:'MY Slang · Oversized', images:[], bg:'#ffffff', category:'myslang', price:85, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
+  {id:12, name:'LEPAK KING', sub:'Lokal Vibes · Oversized', images:[], bg:'#ffffff', category:'myslang', price:85, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
 ];
 
 let cart = [];
