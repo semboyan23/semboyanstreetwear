@@ -46,19 +46,22 @@ nav{position:sticky;top:0;z-index:100;background:var(--ink);display:flex;align-i
 .hero-stats{display:flex;gap:32px;margin-top:48px;padding-top:32px;border-top:1px solid #2a2a2a;}
 .hero-stat-num{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:1px;color:#fff;}
 .hero-stat-label{font-size:0.72rem;color:#555;letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
-/* HERO RIGHT — T-SHIRT VISUAL */
+/* HERO SLIDESHOW */
 .hero-right{position:relative;display:flex;align-items:center;justify-content:center;background:#111;overflow:hidden;}
-.hero-right::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,#2a0a08 0%,#111 70%);pointer-events:none;}
-.tshirt-wrap{position:relative;z-index:2;animation:floatTee 4s ease-in-out infinite;}
-@keyframes floatTee{0%,100%{transform:translateY(0px);}50%{transform:translateY(-14px);}}
-.floating-words{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
-.fw{position:absolute;font-family:'Bebas Neue',sans-serif;letter-spacing:2px;opacity:0;animation:fadeFloat 6s ease-in-out infinite;}
-.fw:nth-child(1){top:12%;left:8%;font-size:1.4rem;color:var(--accent);animation-delay:0s;}
-.fw:nth-child(2){top:22%;right:10%;font-size:1rem;color:#444;animation-delay:1s;}
-.fw:nth-child(3){bottom:30%;left:6%;font-size:1.1rem;color:#333;animation-delay:2s;}
-.fw:nth-child(4){top:55%;right:8%;font-size:1.6rem;color:var(--accent);opacity:0;animation-delay:0.5s;}
-.fw:nth-child(5){bottom:15%;right:14%;font-size:0.9rem;color:#444;animation-delay:3s;}
-.fw:nth-child(6){top:38%;left:12%;font-size:0.85rem;color:#333;animation-delay:1.5s;}
+.hero-right::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,#1a0808 0%,#111 70%);pointer-events:none;}
+.hero-slideshow{position:relative;z-index:2;width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity 0.8s ease;padding:32px;}
+.slide.active{opacity:1;}
+.slide img{max-height:72%;max-width:85%;object-fit:contain;filter:drop-shadow(0 20px 40px rgba(0,0,0,0.5));transition:transform 0.8s ease;}
+.slide.active img{transform:translateY(-6px);}
+.slide-label{position:absolute;bottom:28px;left:0;right:0;text-align:center;}
+.slide-name{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:3px;color:#fff;opacity:0;transform:translateY(8px);transition:all 0.6s ease 0.3s;}
+.slide.active .slide-name{opacity:1;transform:translateY(0);}
+.slide-price{font-size:0.82rem;color:var(--accent);letter-spacing:2px;opacity:0;transition:all 0.6s ease 0.45s;}
+.slide.active .slide-price{opacity:1;}
+.slide-dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:3;}
+.slide-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);cursor:pointer;transition:all 0.2s;}
+.slide-dot.active{background:var(--accent);border-color:var(--accent);transform:scale(1.2);}
 @keyframes fadeFloat{0%,100%{opacity:0;transform:translateY(10px);}30%,70%{opacity:1;transform:translateY(0);}}
 /* NAV TAGLINE */
 .nav-tagline{font-size:0.6rem;letter-spacing:3px;color:#555;font-family:'DM Sans',sans-serif;text-transform:uppercase;margin-top:2px;}
@@ -251,31 +254,10 @@ footer{background:var(--ink);color:#fff;padding:48px 32px 24px;}
       </div>
     </div>
 
-    <!-- RIGHT: T-SHIRT SVG VISUAL -->
+    <!-- RIGHT: PRODUCT SLIDESHOW -->
     <div class="hero-right">
-      <div class="floating-words">
-        <div class="fw">வணக்கம்</div>
-        <div class="fw">MAKKAL</div>
-        <div class="fw">LAH ENERGY</div>
-        <div class="fw">இனிமை</div>
-        <div class="fw">BOLEH LAH</div>
-        <div class="fw">SEMANGAT</div>
-      </div>
-      <div class="tshirt-wrap">
-        <svg width="280" height="300" viewBox="0 0 280 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- T-shirt shape -->
-          <path d="M85 20 L20 70 L50 90 L50 270 L230 270 L230 90 L260 70 L195 20 C185 35 165 45 140 45 C115 45 95 35 85 20Z" fill="#e63528" opacity="0.15" stroke="#e63528" stroke-width="2"/>
-          <path d="M85 20 L20 70 L50 90 L50 270 L230 270 L230 90 L260 70 L195 20 C185 35 165 45 140 45 C115 45 95 35 85 20Z" fill="none" stroke="#e63528" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.4"/>
-          <!-- Collar -->
-          <path d="M95 22 C105 42 120 52 140 52 C160 52 175 42 185 22" fill="none" stroke="#e63528" stroke-width="2" opacity="0.7"/>
-          <!-- Tamil text on shirt -->
-          <text x="140" y="155" text-anchor="middle" font-size="32" fill="#e63528" opacity="0.9" font-family="serif">வணக்கம்</text>
-          <text x="140" y="195" text-anchor="middle" font-size="11" fill="#666" letter-spacing="4" font-family="sans-serif">SEMBOYAN STREETWEAR</text>
-          <!-- Sleeve lines -->
-          <line x1="50" y1="90" x2="20" y2="70" stroke="#e63528" stroke-width="1" opacity="0.3"/>
-          <line x1="230" y1="90" x2="260" y2="70" stroke="#e63528" stroke-width="1" opacity="0.3"/>
-        </svg>
-      </div>
+      <div class="hero-slideshow" id="hero-slideshow"></div>
+      <div class="slide-dots" id="slide-dots"></div>
     </div>
   </section>
 
@@ -739,8 +721,57 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeLightbox();
 });
 
+// ─── HERO SLIDESHOW ───────────────────────────────────
+const HERO_SLIDES = PRODUCTS.filter(p => p.images && p.images.length > 0);
+let currentSlide = 0;
+let slideTimer = null;
+
+function initSlideshow() {
+  if (!HERO_SLIDES.length) return;
+  const wrap = document.getElementById('hero-slideshow');
+  const dots = document.getElementById('slide-dots');
+  if (!wrap) return;
+  wrap.innerHTML = HERO_SLIDES.map((p, i) => `
+    <div class="slide${i===0?' active':''}" id="slide-${i}">
+      <img src="${p.images[0]}" alt="${p.name}"/>
+      <div class="slide-label">
+        <div class="slide-name">${p.name}</div>
+        <div class="slide-price">RM ${p.price}</div>
+      </div>
+    </div>
+  `).join('');
+  dots.innerHTML = HERO_SLIDES.map((_, i) => `
+    <div class="slide-dot${i===0?' active':''}" onclick="goToSlide(${i})"></div>
+  `).join('');
+  startSlideTimer();
+}
+
+function goToSlide(idx) {
+  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.slide-dot').forEach(d => d.classList.remove('active'));
+  const slide = document.getElementById(`slide-${idx}`);
+  const dot = document.querySelectorAll('.slide-dot')[idx];
+  if (slide) slide.classList.add('active');
+  if (dot) dot.classList.add('active');
+  currentSlide = idx;
+  resetSlideTimer();
+}
+
+function startSlideTimer() {
+  slideTimer = setInterval(() => {
+    const next = (currentSlide + 1) % HERO_SLIDES.length;
+    goToSlide(next);
+  }, 3500);
+}
+
+function resetSlideTimer() {
+  clearInterval(slideTimer);
+  startSlideTimer();
+}
+
 // Init
 renderProducts();
+initSlideshow();
 </script>
 </body>
 </html>
