@@ -77,8 +77,30 @@ nav{position:sticky;top:0;z-index:100;background:var(--ink);display:flex;align-i
 .product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:24px;padding:16px 32px 60px;}
 .product-card{background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--border);transition:transform 0.2s,box-shadow 0.2s;}
 .product-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,0.08);}
-.product-img{height:220px;display:flex;align-items:center;justify-content:center;font-size:4.5rem;position:relative;}
-.badge{position:absolute;top:12px;left:12px;padding:3px 10px;border-radius:3px;font-size:0.7rem;font-family:'Bebas Neue',sans-serif;letter-spacing:1px;}
+.product-img{height:280px;display:flex;align-items:center;justify-content:center;font-size:4.5rem;position:relative;overflow:hidden;cursor:zoom-in;}
+.product-img img{width:100%;height:100%;object-fit:contain;display:block;transition:transform 0.3s;}
+.product-img:hover img{transform:scale(1.04);}
+.product-img .thumb-dots{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:5px;}
+.product-img .thumb-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.6);cursor:pointer;transition:background 0.2s;}
+.product-img .thumb-dot.active{background:#fff;}
+.zoom-hint{position:absolute;bottom:8px;right:10px;font-size:0.65rem;color:rgba(255,255,255,0.5);letter-spacing:1px;pointer-events:none;}
+/* LIGHTBOX */
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:500;align-items:center;justify-content:center;}
+.lightbox.open{display:flex;}
+.lightbox-inner{position:relative;max-width:90vw;max-height:90vh;display:flex;flex-direction:column;align-items:center;gap:16px;}
+.lightbox-img-wrap{position:relative;display:flex;align-items:center;gap:16px;}
+.lightbox-img{max-width:80vw;max-height:75vh;object-fit:contain;border-radius:8px;display:block;}
+.lightbox-arrow{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;width:44px;height:44px;border-radius:50%;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;flex-shrink:0;}
+.lightbox-arrow:hover{background:rgba(255,255,255,0.25);}
+.lightbox-arrow.hidden{opacity:0;pointer-events:none;}
+.lightbox-close{position:absolute;top:-40px;right:0;background:none;border:none;color:#fff;font-size:1.8rem;cursor:pointer;opacity:0.7;line-height:1;}
+.lightbox-close:hover{opacity:1;}
+.lightbox-title{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:2px;color:#fff;}
+.lightbox-thumbs{display:flex;gap:10px;justify-content:center;}
+.lightbox-thumb{width:56px;height:56px;object-fit:contain;border-radius:4px;cursor:pointer;opacity:0.5;border:2px solid transparent;background:#222;transition:all 0.2s;}
+.lightbox-thumb.active{opacity:1;border-color:#fff;}
+.lightbox-counter{font-size:0.78rem;color:rgba(255,255,255,0.4);letter-spacing:2px;}
+.badge{position:absolute;top:12px;left:12px;padding:3px 10px;border-radius:3px;font-size:0.7rem;font-family:'Bebas Neue',sans-serif;letter-spacing:1px;z-index:2;}
 .badge.new{background:var(--accent2);color:#fff;}
 .badge.sale{background:var(--accent);color:#fff;}
 .product-info{padding:16px;}
@@ -447,41 +469,66 @@ footer{background:var(--ink);color:#fff;padding:48px 32px 24px;}
   </div>
 </div>
 
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightboxOutside(event)">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <div class="lightbox-title" id="lightbox-title"></div>
+    <div class="lightbox-img-wrap">
+      <button class="lightbox-arrow" id="lb-prev" onclick="lbNav(-1)">‹</button>
+      <img class="lightbox-img" id="lightbox-img" src="" alt=""/>
+      <button class="lightbox-arrow" id="lb-next" onclick="lbNav(1)">›</button>
+    </div>
+    <div class="lightbox-counter" id="lb-counter"></div>
+    <div class="lightbox-thumbs" id="lb-thumbs"></div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div id="toast"></div>
 
 <script>
 const PRODUCTS = [
-  {id:1, name:'TEH TARIK GANG', sub:'MY Slang · Unisex', img:'tehtarikgang.png', bg:'#1a1a1a', category:'myslang', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:'new'},
-  {id:2, name:'BLACK & PROUD', sub:'MY Slang · Unisex', img:'black_proud.png', bg:'#1a1a1a', category:'myslang', price:89, oldPrice:null, sizes:['S','M','L','XL'], badge:'new'},
-  {id:3, name:'STAY DRIPPY', sub:'MY Slang · Unisex', img:'staydrippy.png', bg:'#1a1a1a', category:'myslang', price:95, oldPrice:null, sizes:['S','M','L','XL','XXL'], badge:'new'},
-  {id:4, name:'ANAK MALAYSIA', sub:'Cultural Pride · Unisex', img:'anakmalaysia.png', bg:'#2a2a2a', category:'cultural', price:99, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:'new'},
-  {id:5, name:'LAH ENERGY', sub:'MY Slang · Oversized', img:null, bg:'#f4ede0', category:'myslang', price:99, oldPrice:null, sizes:['S','M','L','XL','XXL'], badge:null},
-  {id:6, name:'BOLEH LAH', sub:'MY Slang · Unisex', img:null, bg:'#e8f4f0', category:'myslang', price:79, oldPrice:99, sizes:['XS','S','M','L','XL'], badge:'sale'},
-  {id:7, name:'வணக்கம்', sub:'Tamil Type · Unisex', img:null, bg:'#f8e8e8', category:'tamil', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:null},
-  {id:8, name:'MAKKAL', sub:'Tamil Type · Unisex', img:null, bg:'#eaf2e8', category:'tamil', price:89, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
-  {id:9, name:'TANAH AIR', sub:'Cultural Pride · Unisex', img:null, bg:'#eaf2e8', category:'cultural', price:95, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
-  {id:10, name:'MALAYSIA KITA', sub:'Cultural Pride · Oversized', img:null, bg:'#f0f4f8', category:'cultural', price:99, oldPrice:119, sizes:['S','M','L','XL','XXL'], badge:'sale'},
-  {id:11, name:'SEMANGAT', sub:'Cultural Pride · Unisex', img:null, bg:'#f8e8e8', category:'cultural', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:null},
-  {id:12, name:'LEPAK KING', sub:'MY Slang · Oversized', img:null, bg:'#e8e8f4', category:'myslang', price:85, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
+  {id:1, name:'TEH TARIK GANG', sub:'MY Slang · Unisex', images:['tehtarikgang.png'], bg:'#1a1a1a', category:'myslang', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:'new'},
+  {id:2, name:'BLACK & PROUD', sub:'MY Slang · Unisex', images:['black_proud.png'], bg:'#1a1a1a', category:'myslang', price:89, oldPrice:null, sizes:['S','M','L','XL'], badge:'new'},
+  {id:3, name:'STAY DRIPPY', sub:'MY Slang · Unisex', images:['staydrippy.png'], bg:'#1a1a1a', category:'myslang', price:95, oldPrice:null, sizes:['S','M','L','XL','XXL'], badge:'new'},
+  {id:4, name:'ANAK MALAYSIA', sub:'Cultural Pride · Unisex', images:['anakmalaysia.png'], bg:'#2a2a2a', category:'cultural', price:99, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:'new'},
+  {id:5, name:'LAH ENERGY', sub:'MY Slang · Oversized', images:[], bg:'#f4ede0', category:'myslang', price:99, oldPrice:null, sizes:['S','M','L','XL','XXL'], badge:null},
+  {id:6, name:'BOLEH LAH', sub:'MY Slang · Unisex', images:[], bg:'#e8f4f0', category:'myslang', price:79, oldPrice:99, sizes:['XS','S','M','L','XL'], badge:'sale'},
+  {id:7, name:'வணக்கம்', sub:'Tamil Type · Unisex', images:[], bg:'#f8e8e8', category:'tamil', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:null},
+  {id:8, name:'MAKKAL', sub:'Tamil Type · Unisex', images:[], bg:'#eaf2e8', category:'tamil', price:89, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
+  {id:9, name:'TANAH AIR', sub:'Cultural Pride · Unisex', images:[], bg:'#eaf2e8', category:'cultural', price:95, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
+  {id:10, name:'MALAYSIA KITA', sub:'Cultural Pride · Oversized', images:[], bg:'#f0f4f8', category:'cultural', price:99, oldPrice:119, sizes:['S','M','L','XL','XXL'], badge:'sale'},
+  {id:11, name:'SEMANGAT', sub:'Cultural Pride · Unisex', images:[], bg:'#f8e8e8', category:'cultural', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:null},
+  {id:12, name:'LEPAK KING', sub:'MY Slang · Oversized', images:[], bg:'#e8e8f4', category:'myslang', price:85, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
 ];
 
 let cart = [];
 let selectedSizes = {};
+let lbImages = [];
+let lbIndex = 0;
 
 function renderProducts(filter='all') {
   const grid = document.getElementById('product-grid');
   const filtered = filter === 'all' ? PRODUCTS :
     filter === 'sale' ? PRODUCTS.filter(p => p.badge === 'sale') :
     PRODUCTS.filter(p => p.category === filter);
-  grid.innerHTML = filtered.map(p => `
+  grid.innerHTML = filtered.map(p => {
+    const hasImages = p.images && p.images.length > 0;
+    const firstImg = hasImages ? p.images[0] : null;
+    return `
     <div class="product-card" data-id="${p.id}">
-      <div class="product-img" style="background:${p.bg};${p.img ? 'padding:0;' : ''}">
+      <div class="product-img" style="background:${p.bg};" onclick="${hasImages ? `openLightbox(${p.id},0)` : ''}">
         ${p.badge ? `<span class="badge ${p.badge}">${p.badge.toUpperCase()}</span>` : ''}
-        ${p.img
-          ? `<img src="${p.img}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:0;"/>`
-          : `<span style="font-size:4.5rem;">${p.emoji || '👕'}</span>`
+        ${firstImg
+          ? `<img src="${firstImg}" alt="${p.name}" id="card-img-${p.id}"/>`
+          : `<span style="font-size:4.5rem;">👕</span>`
         }
+        ${hasImages && p.images.length > 1 ? `
+          <div class="thumb-dots">
+            ${p.images.map((_,i) => `<span class="thumb-dot${i===0?' active':''}" onclick="event.stopPropagation();switchCardImg(${p.id},${i},this)"></span>`).join('')}
+          </div>` : ''}
+        ${hasImages ? `<span class="zoom-hint">CLICK TO ZOOM</span>` : ''}
       </div>
       <div class="product-info">
         <div class="product-name">${p.name}</div>
@@ -494,8 +541,57 @@ function renderProducts(filter='all') {
         </div>
         <button class="add-btn" onclick="addToCart(${p.id})">ADD TO CART</button>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
+}
+
+function switchCardImg(pid, idx, dot) {
+  const product = PRODUCTS.find(p => p.id === pid);
+  if (!product) return;
+  const imgEl = document.getElementById(`card-img-${pid}`);
+  if (imgEl) imgEl.src = product.images[idx];
+  dot.closest('.thumb-dots').querySelectorAll('.thumb-dot').forEach(d => d.classList.remove('active'));
+  dot.classList.add('active');
+}
+
+function openLightbox(pid, startIdx) {
+  const product = PRODUCTS.find(p => p.id === pid);
+  if (!product || !product.images.length) return;
+  lbImages = product.images;
+  lbIndex = startIdx || 0;
+  document.getElementById('lightbox-title').textContent = product.name;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  renderLightbox();
+}
+
+function renderLightbox() {
+  document.getElementById('lightbox-img').src = lbImages[lbIndex];
+  document.getElementById('lb-counter').textContent = `${lbIndex + 1} / ${lbImages.length}`;
+  document.getElementById('lb-prev').classList.toggle('hidden', lbIndex === 0);
+  document.getElementById('lb-next').classList.toggle('hidden', lbIndex === lbImages.length - 1);
+  document.getElementById('lb-thumbs').innerHTML = lbImages.length > 1
+    ? lbImages.map((img, i) => `<img class="lightbox-thumb${i===lbIndex?' active':''}" src="${img}" onclick="lbGoTo(${i})"/>`).join('')
+    : '';
+}
+
+function lbNav(dir) {
+  lbIndex = Math.max(0, Math.min(lbImages.length - 1, lbIndex + dir));
+  renderLightbox();
+}
+
+function lbGoTo(idx) {
+  lbIndex = idx;
+  renderLightbox();
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeLightboxOutside(e) {
+  if (e.target === document.getElementById('lightbox')) closeLightbox();
 }
 
 function selectSize(pid, size, btn) {
@@ -634,6 +730,14 @@ function showToast(msg) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
 }
+
+// Keyboard navigation for lightbox
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'ArrowLeft') lbNav(-1);
+  if (e.key === 'ArrowRight') lbNav(1);
+  if (e.key === 'Escape') closeLightbox();
+});
 
 // Init
 renderProducts();
