@@ -163,23 +163,47 @@ body{font-family:'DM Sans',sans-serif;background:var(--soft);color:var(--ink);mi
 <script>
 // ─── CONFIG ───────────────────────────────────────────
 const ADMIN_PASSWORD = 'semboyan2025';
-const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1er1eCNWK3I2_tPzAfmulWxbXoDWeFsMAxqfX-p2bLIE/edit';
+const SHEET_ID = '1er1eCNWK3I2_tPzAfmulWxbXoDWeFsMAxqfX-p2bLIE';
+const SHEET_CSV = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`;
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`;
 
-// ─── PRODUCTS (keep in sync with index.html) ──────────
-let PRODUCTS = [
-  {id:1, name:'TEH TARIK GANG', sub:'MY Slang · Unisex', images:['tehtarikgang.png'], category:'myslang', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:'new'},
-  {id:2, name:'BLACK & PROUD', sub:'MY Slang · Unisex', images:['black_proud.png'], category:'myslang', price:89, oldPrice:null, sizes:['S','M','L','XL'], badge:'new'},
-  {id:3, name:'STAY DRIPPY', sub:'MY Slang · Unisex', images:['staydrippy.png'], category:'myslang', price:95, oldPrice:null, sizes:['S','M','L','XL','XXL'], badge:'new'},
-  {id:4, name:'ANAK MALAYSIA', sub:'Cultural Pride · Unisex', images:['anakmalaysia.png'], category:'cultural', price:99, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:'new'},
-  {id:5, name:'LAH ENERGY', sub:'MY Slang · Oversized', images:[], category:'myslang', price:99, oldPrice:null, sizes:['S','M','L','XL','XXL'], badge:null},
-  {id:6, name:'BOLEH LAH', sub:'MY Slang · Unisex', images:[], category:'myslang', price:79, oldPrice:99, sizes:['XS','S','M','L','XL'], badge:'sale'},
-  {id:7, name:'வணக்கம்', sub:'Tamil Type · Unisex', images:[], category:'tamil', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:null},
-  {id:8, name:'MAKKAL', sub:'Tamil Type · Unisex', images:[], category:'tamil', price:89, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
-  {id:9, name:'TANAH AIR', sub:'Cultural Pride · Unisex', images:[], category:'cultural', price:95, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
-  {id:10, name:'MALAYSIA KITA', sub:'Cultural Pride · Oversized', images:[], category:'cultural', price:99, oldPrice:119, sizes:['S','M','L','XL','XXL'], badge:'sale'},
-  {id:11, name:'SEMANGAT', sub:'Cultural Pride · Unisex', images:[], category:'cultural', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:null},
-  {id:12, name:'LEPAK KING', sub:'MY Slang · Oversized', images:[], category:'myslang', price:85, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
-];
+const PRODUCT_TEMPLATE = {
+  1:  {images:['tehtarikgang.png'], sizes:['XS','S','M','L','XL'],  sub:'Lokal Vibes · Unisex'},
+  2:  {images:['black_proud.png'],  sizes:['S','M','L','XL'],       sub:'Lokal Vibes · Unisex'},
+  3:  {images:['staydrippy.png'],   sizes:['S','M','L','XL','XXL'], sub:'Lokal Vibes · Unisex'},
+  4:  {images:['anakmalaysia.png'], sizes:['XS','S','M','L','XL'],  sub:'Cultural Pride · Unisex'},
+  5:  {images:[],                   sizes:['S','M','L','XL','XXL'], sub:'Lokal Vibes · Oversized'},
+  6:  {images:[],                   sizes:['XS','S','M','L','XL'],  sub:'Lokal Vibes · Unisex'},
+  7:  {images:[],                   sizes:['XS','S','M','L','XL'],  sub:'Tamil Type · Unisex'},
+  8:  {images:[],                   sizes:['S','M','L','XL'],       sub:'Tamil Type · Unisex'},
+  9:  {images:[],                   sizes:['S','M','L','XL'],       sub:'Cultural Pride · Unisex'},
+  10: {images:[],                   sizes:['S','M','L','XL','XXL'], sub:'Cultural Pride · Oversized'},
+  11: {images:[],                   sizes:['XS','S','M','L','XL'],  sub:'Cultural Pride · Unisex'},
+  12: {images:[],                   sizes:['S','M','L','XL'],       sub:'Lokal Vibes · Oversized'},
+};
+
+let PRODUCTS = [];
+
+// ─── CSV PARSER ────────────────────────────────────────
+function parseCSV(csv) {
+  const lines = csv.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+  return lines.slice(1).map(line => {
+    const cols = [];
+    let cur = '', inQuote = false;
+    for (const ch of line) {
+      if (ch === '"') inQuote = !inQuote;
+      else if (ch === ',' && !inQuote) { cols.push(cur.trim()); cur = ''; }
+      else cur += ch;
+    }
+    cols.push(cur.trim());
+    const obj = {};
+    headers.forEach((h, i) => obj[h] = cols[i] || '');
+    return obj;
+  });
+}
+
+const parsePrice = v => v ? parseFloat(v.toString().replace(/[^\d.]/g,'')) || null : null;
 
 // ─── AUTH ──────────────────────────────────────────────
 function login() {
@@ -187,7 +211,7 @@ function login() {
   if (pwd === ADMIN_PASSWORD) {
     document.getElementById('login-view').style.display = 'none';
     document.getElementById('admin-view').style.display = 'block';
-    renderAdmin();
+    loadFromSheet();
   } else {
     document.getElementById('login-error').style.display = 'block';
     document.getElementById('pwd-input').value = '';
@@ -201,6 +225,44 @@ function logout() {
   document.getElementById('pwd-input').value = '';
 }
 
+// ─── LOAD FROM SHEET ───────────────────────────────────
+async function loadFromSheet() {
+  document.getElementById('pricing-rows').innerHTML = `
+    <div style="text-align:center;padding:48px;color:var(--muted);">
+      <div style="font-size:2rem;margin-bottom:10px;">⏳</div>
+      <div style="font-family:'Bebas Neue',sans-serif;letter-spacing:2px;">LOADING FROM GOOGLE SHEET...</div>
+    </div>`;
+  try {
+    const res = await fetch(SHEET_CSV);
+    if (!res.ok) throw new Error('fetch failed');
+    const csv = await res.text();
+    const rows = parseCSV(csv);
+    PRODUCTS = rows.map(row => {
+      const id = parseInt(row.id);
+      const tmpl = PRODUCT_TEMPLATE[id] || {images:[], sizes:['S','M','L','XL'], sub:'Lokal Vibes · Unisex'};
+      return {
+        id,
+        name: row.name || '',
+        sub: tmpl.sub,
+        images: tmpl.images,
+        price: parsePrice(row.price) || 0,
+        oldPrice: parsePrice(row.oldprice) || null,
+        badge: row.badge ? row.badge.trim().toLowerCase() : null,
+      };
+    }).filter(p => p.id && p.name);
+    renderAdmin();
+    showToast('✅ Loaded live from Google Sheet', 'success');
+  } catch(err) {
+    document.getElementById('pricing-rows').innerHTML = `
+      <div style="text-align:center;padding:48px;color:var(--accent);">
+        <div style="font-size:2rem;margin-bottom:10px;">⚠️</div>
+        <div style="font-family:'Bebas Neue',sans-serif;letter-spacing:2px;">COULD NOT LOAD SHEET</div>
+        <div style="font-size:0.82rem;margin-top:8px;color:var(--muted);">Make sure the sheet is public and has the correct columns.</div>
+        <button onclick="loadFromSheet()" style="margin-top:16px;background:var(--ink);color:#fff;border:none;padding:10px 24px;font-family:'Bebas Neue',sans-serif;letter-spacing:1px;cursor:pointer;border-radius:4px;">RETRY</button>
+      </div>`;
+  }
+}
+
 // ─── RENDER ────────────────────────────────────────────
 function renderAdmin() {
   renderStats();
@@ -208,10 +270,10 @@ function renderAdmin() {
 }
 
 function renderStats() {
-  const avgPrice = Math.round(PRODUCTS.reduce((s,p) => s + p.price, 0) / PRODUCTS.length);
+  const avgPrice = (PRODUCTS.reduce((s,p) => s + p.price, 0) / PRODUCTS.length).toFixed(2);
   const onSale = PRODUCTS.filter(p => p.badge === 'sale').length;
   const withPhotos = PRODUCTS.filter(p => p.images && p.images.length > 0).length;
-  const lowestPrice = Math.min(...PRODUCTS.map(p => p.price));
+  const lowestPrice = Math.min(...PRODUCTS.map(p => p.price)).toFixed(2);
   document.getElementById('stats-row').innerHTML = `
     <div class="stat-card"><div class="stat-label">Total Products</div><div class="stat-value">${PRODUCTS.length}</div></div>
     <div class="stat-card"><div class="stat-label">Avg Price</div><div class="stat-value">RM ${avgPrice}</div></div>
@@ -227,109 +289,18 @@ function renderRows() {
       <div class="product-cell">
         ${p.images && p.images.length > 0
           ? `<img class="product-thumb" src="${p.images[0]}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><div class="product-thumb-placeholder" style="display:none;">👕</div>`
-          : `<div class="product-thumb-placeholder">👕</div>`
-        }
+          : `<div class="product-thumb-placeholder">👕</div>`}
         <div>
           <div class="product-cell-name">${p.name}</div>
           <div class="product-cell-sub">${p.sub}</div>
         </div>
       </div>
-      <div>
-        <span class="price-prefix">RM</span>
-        <input class="price-input" type="number" id="price-${p.id}" value="${p.price}" min="1" oninput="markChanged(this,${p.id},'price')"/>
-      </div>
-      <div>
-        <span class="price-prefix">RM</span>
-        <input class="price-input" type="number" id="oldprice-${p.id}" value="${p.oldPrice || ''}" min="1" placeholder="—" oninput="markChanged(this,${p.id},'oldPrice')"/>
-      </div>
-      <div>
-        <span class="badge-pill ${p.badge || 'none'}">${p.badge ? p.badge.toUpperCase() : 'NONE'}</span>
-      </div>
-      <div>
-        <button class="toggle-sale ${p.badge==='sale'?'active':''}" id="sale-${p.id}" onclick="toggleSale(${p.id})">
-          ${p.badge==='sale' ? 'ON' : 'OFF'}
-        </button>
-      </div>
+      <div><span class="price-prefix">RM</span> <strong>${p.price.toFixed(2)}</strong></div>
+      <div><span class="price-prefix">${p.oldPrice ? 'RM ' + p.oldPrice.toFixed(2) : '—'}</span></div>
+      <div><span class="badge-pill ${p.badge || 'none'}">${p.badge ? p.badge.toUpperCase() : 'NONE'}</span></div>
+      <div><span class="badge-pill ${p.badge==='sale'?'sale':'none'}">${p.badge==='sale'?'YES':'NO'}</span></div>
     </div>
   `).join('');
-}
-
-// ─── INTERACTIONS ──────────────────────────────────────
-function markChanged(input, pid, field) {
-  input.classList.add('changed');
-  const val = parseFloat(input.value) || null;
-  const p = PRODUCTS.find(x => x.id === pid);
-  if (field === 'price') p.price = val || p.price;
-  if (field === 'oldPrice') p.oldPrice = val;
-  renderStats();
-}
-
-function toggleSale(pid) {
-  const p = PRODUCTS.find(x => x.id === pid);
-  const btn = document.getElementById(`sale-${pid}`);
-  const badgeEl = document.querySelector(`#row-${pid} .badge-pill`);
-  if (p.badge === 'sale') {
-    p.badge = null;
-    btn.textContent = 'OFF';
-    btn.classList.remove('active');
-    badgeEl.className = 'badge-pill none';
-    badgeEl.textContent = 'NONE';
-  } else {
-    p.badge = 'sale';
-    btn.textContent = 'ON';
-    btn.classList.add('active');
-    badgeEl.className = 'badge-pill sale';
-    badgeEl.textContent = 'SALE';
-  }
-  renderStats();
-}
-
-// ─── SAVE & EXPORT ─────────────────────────────────────
-function saveAll() {
-  // Read all current input values
-  PRODUCTS.forEach(p => {
-    const priceEl = document.getElementById(`price-${p.id}`);
-    const oldPriceEl = document.getElementById(`oldprice-${p.id}`);
-    if (priceEl) p.price = parseFloat(priceEl.value) || p.price;
-    if (oldPriceEl) p.oldPrice = oldPriceEl.value ? parseFloat(oldPriceEl.value) : null;
-  });
-
-  // Generate the PRODUCTS array code
-  const lines = PRODUCTS.map(p => {
-    const imgs = p.images.map(i => `'${i}'`).join(',');
-    const sizes = p.sizes.map(s => `'${s}'`).join(',');
-    const badge = p.badge ? `'${p.badge}'` : 'null';
-    const oldPrice = p.oldPrice ? p.oldPrice : 'null';
-    return `  {id:${p.id}, name:'${p.name}', sub:'${p.sub}', images:[${imgs}], bg:'#ffffff', category:'${p.category}', price:${p.price}, oldPrice:${oldPrice}, sizes:[${sizes}], badge:${badge}},`;
-  });
-
-  const code = `const PRODUCTS = [\n${lines.join('\n')}\n];`;
-
-  // Copy to clipboard
-  navigator.clipboard.writeText(code).then(() => {
-    showToast('✅ Copied to clipboard! Paste into index.html on GitHub', 'success');
-    // Clear changed highlights
-    document.querySelectorAll('.price-input.changed').forEach(el => el.classList.remove('changed'));
-    renderStats();
-  }).catch(() => {
-    // Fallback — show in a textarea
-    showExportModal(code);
-  });
-}
-
-function showExportModal(code) {
-  const modal = document.createElement('div');
-  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px;';
-  modal.innerHTML = `
-    <div style="background:#fff;border-radius:10px;padding:24px;max-width:700px;width:100%;">
-      <div style="font-family:Bebas Neue,sans-serif;font-size:1.2rem;letter-spacing:1px;margin-bottom:12px;">COPY THIS CODE → PASTE INTO index.html</div>
-      <textarea style="width:100%;height:300px;font-family:monospace;font-size:0.78rem;padding:12px;border:1px solid #ddd;border-radius:6px;resize:none;">${code}</textarea>
-      <div style="display:flex;gap:10px;margin-top:12px;">
-        <button onclick="navigator.clipboard.writeText(this.previousElementSibling.value);this.textContent='Copied!'" style="background:#2d5a3d;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-family:Bebas Neue,sans-serif;letter-spacing:1px;">COPY</button>
-        <button onclick="this.closest('div[style]').remove()" style="background:#eee;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;">Close</button>
-      </div>
-    </div>`;
-  document.body.appendChild(modal);
 }
 
 // ─── TOAST ─────────────────────────────────────────────
